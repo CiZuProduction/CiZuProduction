@@ -1,0 +1,33 @@
+# Secrets
+.env
+.env.*
+
+# Build artifacts — akan dibuat ulang di builder stage
+node_modules/
+.next/
+out/
+
+# Dev & test
+coverage/
+.nyc_output/
+__tests__/
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Docs
+*.md
+!README.md

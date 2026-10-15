@@ -1,0 +1,32 @@
+# Secrets — jangan pernah masuk image
+.env
+.env.*
+*.pem
+*.key
+
+# Python artifacts
+.venv/
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+
+# Test files — tidak dibutuhkan di production image
+tests/
+
+# Logs & data — di-mount via volume
+*.log
+data/
+uploads/
+backups/
+
+# Dev artifacts
+.git/
+.gitignore
+*.md
+!README.md

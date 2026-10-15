@@ -1,0 +1,102 @@
+{
+  "name": "03 Operational Health Check",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours"
+            }
+          ]
+        }
+      },
+      "id": "ff861f75-6ad9-4f40-a54b-396f59e43b0a",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [820, 360]
+    },
+    {
+      "parameters": {
+        "url": "http://api:8000/health",
+        "options": {}
+      },
+      "id": "e39464e9-6b2c-4f0a-a805-a6f53adab507",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1040, 360]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8a248679-d339-4145-b48f-90bdecc142e9",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "ok",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "7de50dc3-8028-4424-ada7-67719d046ebd",
+      "name": "If",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [1260, 360]
+    },
+    {
+      "parameters": {
+        "jsCode": "console.log('API OK:', new Date().toISOString());\nreturn [{json: {status: 'healthy', time: new Date().toISOString()}}];\n"
+      },
+      "id": "a0e785ec-7385-4987-bd3e-31869b0e611a",
+      "name": "Log Healthy",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1460, 200]
+    },
+    {
+      "parameters": {
+        "jsCode": "console.error('API DOWN:', new Date().toISOString());\n// TODO: tambahkan notifikasi email/Telegram di sini\nreturn [{json: {status: 'unhealthy', time: new Date().toISOString()}}];\n"
+      },
+      "id": "1f97beaa-08bd-4f6c-a3c9-dc17fdb2e9ff",
+      "name": "Alert Unhealthy",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1460, 440]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [[{"node": "HTTP Request", "type": "main", "index": 0}]]
+    },
+    "HTTP Request": {
+      "main": [[{"node": "If", "type": "main", "index": 0}]]
+    },
+    "If": {
+      "main": [
+        [{"node": "Log Healthy", "type": "main", "index": 0}],
+        [{"node": "Alert Unhealthy", "type": "main", "index": 0}]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {"executionOrder": "v1"},
+  "pinData": {},
+  "tags": []
+}

@@ -1,0 +1,60 @@
+# ============================================================
+# Backend FastAPI — Pinned Dependencies
+# Last security audit: 2026-10-14
+# Run: pip install -r requirements.txt
+# ============================================================
+
+# Web framework
+# fastapi pulls starlette — pin fastapi agar starlette terupdate
+fastapi==0.115.12
+uvicorn[standard]==0.34.2
+
+# Rate limiting
+slowapi==0.1.9
+
+# Settings & validation
+pydantic[email]==2.10.3
+pydantic-settings==2.6.1
+
+# Database ORM & migrations
+# SQLAlchemy 2.1+ diperlukan untuk Python 3.15 compatibility
+sqlalchemy[asyncio]==2.1.4
+psycopg==3.2.3
+alembic==1.14.0
+
+# Authentication
+# python-jose 3.3.0 punya CVE — ganti ke joserfc yang aktif di-maintain
+# atau gunakan PyJWT sebagai alternatif yang lebih dirawat
+PyJWT==2.10.1
+# bcrypt langsung — passlib tidak support bcrypt >= 4.x
+bcrypt==4.2.1
+# python-multipart fix version >= 0.0.31
+python-multipart==0.0.31
+
+# HTTP client
+httpx==0.28.0
+
+# File handling
+aiofiles==24.1.0
+
+# Encryption — fix untuk PYSEC-2026-* → 49.0.0
+cryptography==44.0.3
+
+# OCR (install di container — butuh system deps)
+# paddleocr==2.9.1
+
+# LLM providers
+openai==1.55.3
+
+# PDF processing — fix vulnerability → upgrade ke versi terbaru yang stabil
+pypdf==6.15.2
+
+# Testing
+pytest==9.0.3
+pytest-asyncio==0.24.0
+
+# Security scanning (dev only)
+pip-audit==2.8.0
+
+# Linting & formatting
+ruff==0.8.2
